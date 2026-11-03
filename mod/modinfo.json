@@ -3,6 +3,6 @@
 	"name": "Monolog Skip",
 	"authors": "NV, Churyru",
 	"description": "Skips a single phrase on jump or selected key (with Improved Input Config: Extended)",
-  "priorities": ["improved-input-config"],
+	"priorities": ["improved-input-config"],
 	"checksum_override_version": false
 }
