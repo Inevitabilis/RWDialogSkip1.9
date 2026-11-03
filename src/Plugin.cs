@@ -1,11 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using ImprovedInput;
 using On.HUD;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Permissions;
-using UnityEngine;
 
 // Allows access to private members
 #pragma warning disable CS0618
@@ -24,40 +21,6 @@ sealed class Plugin : BaseUnityPlugin
     int counter = 0;
     public new static ManualLogSource Logger;
     static bool IsInit;
-    public static class IIC_E_Compatibility
-    {
-        private static bool? _enabled;
-        public static object SkipMonolog;
-        public static bool Enabled
-        {
-            get
-            {
-                _enabled ??= BepInEx.Bootstrap.Chainloader.PluginInfos.ContainsKey("com.dual.improved-input-config");
-                return (bool)_enabled;
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static void Initialize()
-        {
-            SkipMonolog = PlayerKeybind.Register(
-                "DialogSkip:skip", 
-                "Dialog Skip", 
-                "Skip line", 
-                KeyCode.None, 
-                KeyCode.None, 
-                KeyCode.None);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-        public static bool CheckRawPressed(int playerNumber)
-        {
-            if (SkipMonolog == null) return false;
-
-            var keybind = (PlayerKeybind)SkipMonolog;
-            return keybind.CheckRawPressed(playerNumber);
-        }
-    }
 
     public void OnEnable()
     {
@@ -82,7 +45,6 @@ sealed class Plugin : BaseUnityPlugin
 
     void DialogBoxOnUpdate(DialogBox.orig_Update orig, HUD.DialogBox self)
     {
-        
         orig(self);
         if (self.hud.owner is Player player && 
             player.abstractCreature.world.game.Players.Any(abstractPlayer => 
